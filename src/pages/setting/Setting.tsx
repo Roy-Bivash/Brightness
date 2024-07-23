@@ -19,22 +19,19 @@ async function getPreferences(): Promise<preferencesInterface | null> {
     }
 }
 
+async function setPreferences(preferences: preferencesInterface | null) {
+    if(preferences){
+        try {
+            await invoke('set_preferences', { new_prefs: preferences });
+            console.log('Preferences updated');
+        } catch (error) {
+            console.error('Error setting preferences:', error);
+        }
+    }
+}
 
 export function Setting() {
     const [userPreferences, setUserPreferences] = useState<preferencesInterface | null>(null);
-    const [test, setTest] = useState("");
-    async function setPreferences(preferences: preferencesInterface | null) {
-        if(preferences){
-            try {
-                await invoke('set_preferences', { new_prefs: preferences });
-                console.log('Preferences updated');
-                setTest("Preferences updated")
-            } catch (error) {
-                setTest(error);
-                console.error('Error setting preferences:', error);
-            }
-        }
-    }
 
     useEffect(() => {
         async function run() {
