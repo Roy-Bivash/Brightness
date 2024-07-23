@@ -6,7 +6,7 @@ import { Screen } from "../../components/screen/Screen";
 import HomeCSS from './Home.module.css';
 
 interface preferencesInterface {
-    state: 'individual' | 'all';
+    state: 'individual' | 'combined';
     theme: 'dark' | 'light';
     custom_theme: Object;
 };
@@ -58,6 +58,7 @@ async function getScreenList() : Promise<Array<string>> {
 export function Home(){
     const [userPreferences, setUserPreferences] = useState<preferencesInterface | null>(null);
     const [screenList, setScreenList] = useState<Array<string>>([]);
+    const [show, setShow] = useState<"combined" | "individual">("individual");
 
     useEffect(() => {
         async function run(){
@@ -77,12 +78,17 @@ export function Home(){
             <main>
                 <div className={HomeCSS.option}>
                     <p>Option : </p>
-                    <button type="button">All</button>
-                    <button type="button">Individual</button>
+                    <button type="button" onClick={() => setShow("combined")}>Combined</button>
+                    <button type="button" onClick={() => setShow("individual")}>Individual</button>
                 </div>
-                {screenList.map((el, i) => (
-                    <Screen key={i} name={el} />
-                ))}
+                {show == "individual" && (
+                    screenList.map((el, i) => (
+                        <Screen key={i} name={el} list={[]} />
+                    ))
+                )}
+                {show == "combined" && (
+                    <Screen name={"all"} list={screenList} />
+                )}
             </main>
         </>
     )

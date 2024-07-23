@@ -1,6 +1,14 @@
 .option{
-
+    display: flex;
+    justify-content: end;
+    align-items: center;
 }
 .option p{
-    margin: 0;
+    margin: 0 4px 0 0;
+    padding: 0;
+}
+
+.option button{
+    background-color: transparent;
+    border: 1px solid black;
 }
