@@ -78,15 +78,15 @@ export function Home(){
             <main>
                 <div className={HomeCSS.option}>
                     <p>Option : </p>
-                    <button type="button" onClick={() => setShow("Combined")}>Combined</button>
-                    <button type="button" onClick={() => setShow("individual")}>Individual</button>
+                    <button type="button" data-selected={(show == "Combined")} onClick={() => setShow("Combined")}>Combined</button>
+                    <button type="button" data-selected={(show == "individual")} onClick={() => setShow("individual")}>Individual</button>
                 </div>
                 {show == "individual" && (
                     screenList.map((el, i) => (
                         <Screen key={i} name={el} list={[]} />
                     ))
                 )}
-                {show == "combined" && (
+                {show == "Combined" && (
                     <Screen name={"Combined"} list={screenList} />
                 )}
             </main>

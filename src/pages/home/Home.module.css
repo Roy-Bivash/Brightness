@@ -12,3 +12,7 @@
     background-color: transparent;
     border: 1px solid black;
 }
+
+.option button[data-selected="true"] {
+    background-color: gray;
+}
