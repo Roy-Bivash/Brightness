@@ -64,6 +64,7 @@ export function Home(){
         async function run(){
             const pref = await getPreferences();
             setUserPreferences(pref);
+            setShow(pref?.state || "individual");
 
             const screens = await getScreenList();
             setScreenList(screens);
@@ -74,7 +75,7 @@ export function Home(){
 
     return(
         <>
-            <Navbar />
+            <Navbar current="Home" />
             <main>
                 <div className={HomeCSS.option}>
                     <p>Option : </p>
@@ -89,6 +90,8 @@ export function Home(){
                 {show == "Combined" && (
                     <Screen name={"Combined"} list={screenList} />
                 )}
+
+                {/* {JSON.stringify(userPreferences)} */}
             </main>
         </>
     )
