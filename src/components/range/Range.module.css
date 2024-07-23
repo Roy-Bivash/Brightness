@@ -1,0 +1,47 @@
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3px;
+}
+
+.theRange{
+    width: 70%;
+    -webkit-appearance: none;
+    padding: 0;
+    outline: none;
+    color: #CCC;
+    opacity: .8;
+    background: #758694;
+    border: 2px solid #758694;
+    box-sizing: border-box;
+    transition: opacity .2s;
+    cursor: pointer;
+    border-radius: 12px
+}
+
+.btn{
+    cursor: pointer;
+    background-color: transparent;
+    border: 1px solid rgb(129, 129, 129);
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    transition: all .1s ease-in;
+}
+
+.btn:hover{
+    background-color: #758694;
+}
+
+.btnMax{
+    cursor: pointer;
+    background-color: transparent;
+    border: 1px solid rgb(129, 129, 129);
+    border-radius: 5px;
+    margin: 0 5px;
+}
+
+.btnMax:hover{
+    background-color: #758694;
+}

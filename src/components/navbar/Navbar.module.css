@@ -1,0 +1,58 @@
+.container{
+    position: fixed;
+    bottom: 0;
+    z-index: 1000;
+    min-width: 100%;
+
+    display: flex;
+    justify-content: center;
+}
+
+.nav {
+    padding: 8px 15px 4px 15px;
+    margin: 0 4px 4px 4px;
+    border-radius: 22px;
+    background-color: rgb(27, 27, 27);
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
+.ul{
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 15px;
+    flex-direction: row;
+    justify-content: center;
+    list-style-type: none;
+}
+
+.ul li{
+    text-decoration: none;  
+    text-align: center;
+}
+
+.ul li[data-selected="true"] .icons{
+    background-color: white;
+}
+
+.ul li[data-selected="false"] .icons{
+    filter: invert(1);
+}
+
+
+.ul li[data-selected="false"]:hover .icons{
+    background-color: rgb(78, 78, 78);
+    filter: invert(0);
+}
+
+.ul li a{
+    text-decoration: none;
+    color: black;
+}
+
+.icons{
+    height: 30px;
+    width: 30px;
+    padding: 5px 10px 5px 10px;
+    border-radius: 15px;
+    transition: all .1s ease-in;
+}
