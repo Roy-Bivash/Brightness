@@ -73,9 +73,10 @@ fn update_brightness(screen: String, value: f32) -> Result<(), String> {
     }
 }
 
+
 fn main() {
     let initial_preferences = Preferences {
-        state: "combined".to_string(),
+        state: "Combined".to_string(),
         theme: "light".to_string(),
         custom_theme: serde_json::json!({}),
     };
