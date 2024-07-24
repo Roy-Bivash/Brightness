@@ -1,7 +1,6 @@
 import { invoke } from "@tauri-apps/api/tauri";
 import { Range } from "../range/Range";
 import ScreenCSS from "./Screen.module.css";
-import { useState } from "react";
 
 interface ScreenProps {
     name: string;

@@ -21,15 +21,6 @@ async function getPreferences(): Promise<preferencesInterface | null> {
     }
 }
 
-async function setPreferences(preferences: preferencesInterface) {
-    try {
-        await invoke('set_preferences', { new_prefs: preferences });
-        console.log('Preferences updated');
-    } catch (error) {
-        console.error('Error setting preferences:', error);
-    }
-}
-
 function parseScreenInfo(rawData:string) {
     // Regular expression to match screen names
     const screenNameRegex = /(\S+) connected/g;
@@ -64,7 +55,7 @@ export function Home(){
         async function run(){
             const pref = await getPreferences();
             setUserPreferences(pref);
-            setShow(pref?.state || "individual");
+            setShow(userPreferences?.state || "individual");
 
             const screens = await getScreenList();
             setScreenList(screens);
