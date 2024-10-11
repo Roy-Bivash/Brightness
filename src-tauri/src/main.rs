@@ -8,8 +8,12 @@ use tauri::command;
 #[derive(Serialize, Deserialize, Debug, Clone)]
 struct Preferences {
     state: String,
-    theme: String,
-    custom_theme: serde_json::Value,
+}
+
+#[derive(Serialize)]
+struct CompatibilityResponse {
+    compatible: bool,
+    message: String,
 }
 
 struct AppState(Mutex<Preferences>);
@@ -73,17 +77,40 @@ fn update_brightness(screen: String, value: f32) -> Result<(), String> {
     }
 }
 
+#[tauri::command]
+fn check_compatibility() -> Result<CompatibilityResponse, String> {
+    let session_type = std::env::var("XDG_SESSION_TYPE").unwrap_or_else(|_| "unknown".to_string());
+
+    if session_type == "x11" {
+        // If Xorg, xrandr is compatible
+        Ok(CompatibilityResponse {
+            compatible: true,
+            message: "Your system is compatible with xrandr.".to_string(),
+        })
+    } else if session_type == "wayland" {
+        // If Wayland, xrandr won't work
+        Ok(CompatibilityResponse {
+            compatible: false,
+            message: "Your system is running Wayland. xrandr is not compatible, please use a Wayland-compatible tool.".to_string(),
+        })
+    } else {
+        // Handle unknown session types
+        Ok(CompatibilityResponse {
+            compatible: false,
+            message: format!("Could not detect the session type. Detected: {}", session_type),
+        })
+    }
+}
+
 
 fn main() {
     let initial_preferences = Preferences {
         state: "Combined".to_string(),
-        theme: "light".to_string(),
-        custom_theme: serde_json::json!({}),
     };
 
     tauri::Builder::default()
         .manage(AppState(Mutex::new(initial_preferences)))
-        .invoke_handler(tauri::generate_handler![get_preferences, set_preferences, get_screen_list, update_brightness])
+        .invoke_handler(tauri::generate_handler![get_preferences, set_preferences, get_screen_list, update_brightness, check_compatibility])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

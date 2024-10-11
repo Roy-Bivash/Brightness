@@ -5,8 +5,6 @@ import SettingCSS from "./Setting.module.css";
 
 interface preferencesInterface {
     state: 'individual' | 'Combined';
-    theme: 'dark' | 'light';
-    custom_theme: Object;
 }
 
 async function getPreferences(): Promise<preferencesInterface | null> {
@@ -35,21 +33,23 @@ export function Setting() {
 
     useEffect(() => {
         async function run() {
-            const pref = await getPreferences();
-            setUserPreferences(pref);
+          const pref = await getPreferences();
+          setUserPreferences(pref);
         }
         run();
     }, []);
+      
 
 
     function updateState(event: React.ChangeEvent<HTMLInputElement>) {
         const { checked } = event.target;
         if (userPreferences) {
-            let updatedPreferences = { ...userPreferences };
-            updatedPreferences.state = (checked) ? "individual" : "Combined";
-            setUserPreferences(updatedPreferences);
+          let updatedPreferences = { ...userPreferences };
+          updatedPreferences.state = checked ? "Combined" : "individual";
+          setUserPreferences(updatedPreferences);
         }
-    }
+      }
+      
 
     return (
         <>
@@ -61,15 +61,13 @@ export function Setting() {
                     type="checkbox" 
                     name="showScreensOnStartup" 
                     id="showScreensOnStartup" 
-                    checked={(userPreferences?.state === "individual")} 
+                    value={userPreferences?.state}
+                    checked={(userPreferences?.state == "Combined")} 
                     onChange={updateState} 
                 />
-                <br /><br />
-                <label htmlFor="">Theme : </label>
-                <i>Comming soon</i>
                 <br />
                 <button onClick={() => setPreferences(userPreferences)} className={SettingCSS.saveBtn} type="button">Save</button>
-                {/* {JSON.stringify(test)} */}
+                {/* {JSON.stringify(userPreferences)} */}
             </main>
         </>
     )

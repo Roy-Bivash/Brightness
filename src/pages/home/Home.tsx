@@ -11,6 +11,16 @@ interface preferencesInterface {
     custom_theme: Object;
 };
 
+interface ErrorInterface {
+    message: string;
+    show: boolean;
+}
+
+interface CompatibilityResponse {
+    compatible: boolean;
+    message: string;
+}
+
 async function getPreferences(): Promise<preferencesInterface | null> {
     try {
       const preferences:preferencesInterface = await invoke('get_preferences');
@@ -45,11 +55,20 @@ async function getScreenList() : Promise<Array<string>> {
     }
 }
 
+async function checkSystemCompatibility() {
+    try {
+        const response: CompatibilityResponse = await invoke("check_compatibility");
+        return(response);
+    } catch (error) {
+        return({ compatible: false, message: "Error checking system compatibility." });
+    }
+}
 
 export function Home(){
     const [userPreferences, setUserPreferences] = useState<preferencesInterface | null>(null);
     const [screenList, setScreenList] = useState<Array<string>>([]);
     const [show, setShow] = useState<"Combined" | "individual">("individual");
+    const [error, setError] = useState<ErrorInterface>({ message: "", show: false });
 
     useEffect(() => {
         async function run(){
@@ -59,6 +78,14 @@ export function Home(){
 
             const screens = await getScreenList();
             setScreenList(screens);
+
+            const compatibility = await checkSystemCompatibility();
+            if(!compatibility.compatible){
+                setError({
+                    show:true,
+                    message: compatibility.message
+                })
+            }
         }
         run();
     }, []);
@@ -82,7 +109,12 @@ export function Home(){
                     <Screen name={"Combined"} list={screenList} />
                 )}
 
-                {/* {JSON.stringify(userPreferences)} */}
+                {error.show && (
+                    <p className={HomeCSS.error}>
+                        Error : {error.message}
+                    </p>
+                )}
+                
             </main>
         </>
     )
